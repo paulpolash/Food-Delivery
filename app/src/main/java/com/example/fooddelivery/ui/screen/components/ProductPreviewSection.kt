@@ -26,12 +26,15 @@ import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout import com.example.fooddelivery.R
+import com.example.fooddelivery.data.ProductHighlights
+import com.example.fooddelivery.data.ProductPreviewState
 import com.example.fooddelivery.ui.theme.AppTheme
 
 @Composable
 @Preview
 fun ProductPreviewSection(
-    modifier: Modifier = Modifier){
+    modifier: Modifier = Modifier,
+    state: ProductPreviewState){
 
     Box(modifier = modifier){
         Box(
@@ -41,6 +44,7 @@ fun ProductPreviewSection(
             modifier = Modifier.padding(24.dp)
         )
         Content(
+            state = state,
             modifier = Modifier
                 .statusBarsPadding()
                 .padding(top = 24.dp)
@@ -61,7 +65,9 @@ private fun ProductBackground(
         ))
 }
 @Composable
-private fun Content(modifier: Modifier = Modifier){
+private fun Content(
+    modifier: Modifier = Modifier,
+    state: ProductPreviewState){
     ConstraintLayout(
         modifier = modifier.fillMaxWidth()
     ){
@@ -81,12 +87,19 @@ private fun Content(modifier: Modifier = Modifier){
             contentScale = ContentScale.FillHeight,
             modifier = Modifier
                 .height(256.dp)
-                .constrainAs(productImg){
+                .constrainAs(productImg) {
                     end.linkTo(parent.end)
                     top.linkTo(anchor = actionBar.bottom, margin = 20.dp)
                 }
-
         )
+
+        ProductHighlights(
+            highlights = state.highlights,
+            modifier = Modifier.constrainAs(highlights){
+                start.linkTo(anchor = parent.start,
+                    margin = 19.dp)
+                top.linkTo(productImg.top)
+            })
     }
 }
 
